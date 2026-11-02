@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>生醫學術地圖與教授研究資產揭密 Hub</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+    
+    body { 
+      font-family: 'Inter', 'PingFang TC', 'Microsoft JhengHei', sans-serif; 
+      background-color: #f4f1ea; 
+      color: #2c2c2c; 
+    }
+
+    /* Newspaper & Dashboard Hybrid Theme */
+    .hero-header { 
+      background: linear-gradient(135deg, #18181b 0%, #27272a 100%); 
+      color: #f4f1ea; 
+      border-bottom: 5px solid #d97706; 
+    }
+
+    .newspaper-card { 
+      background: #fffcf8; 
+      border: 2px solid #27272a; 
+      box-shadow: 4px 4px 0px #27272a; 
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); 
+    }
+
+    .newspaper-card:hover { 
+      transform: translateY(-2px); 
+      box-shadow: 6px 6px 0px #d97706; 
+    }
+
+    .badge-solo { 
+      background-color: #059669; 
+      color: white; 
+    }
+
+    .badge-co { 
+      background-color: #d97706; 
+      color: white; 
+    }
+
+    .tag-btn { 
+      transition: all 0.15s ease-in-out; 
+    }
+
+    .tag-btn.active { 
+      background-color: #d97706; 
+      color: white; 
+      border-color: #d97706; 
+      box-shadow: 2px 2px 0px #18181b;
+    }
+
+    /* Custom Scrollbar for Modals */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #d97706;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body class="min-h-screen pb-16">
+
+  <!-- 📰 Header Banner -->
+  <header class="hero-header py-8 px-4 sm:px-8 mb-8 relative overflow-hidden">
+    <div class="max-w-7xl mx-auto">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+        <div>
+          <div class="inline-flex items-center gap-2 bg-amber-600 text-white text-xs font-black px-3 py-1 mb-2 tracking-widest uppercase rounded-sm border border-amber-400 shadow-sm">
+            <i class="fa-solid fa-flask-vial"></i> 2026 全域生醫戰力與適應症解密 Hub
+          </div>
+          <h1 class="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight leading-tight">
+            生醫超音波與微氣泡適應症揭密 Hub
+          </h1>
+          <p class="text-amber-400 mt-2 text-sm sm:text-base font-medium max-w-3xl">
+            透視 10 大生醫與超音波權威教授團隊（胡尚秀、邱信程、張建文、陳之碩、陳芳馨、陳韻晶、葉秩光、劉浩澧、謝達斌、曾繁根）之疾病模型與藥物遞送資產。
+          </p>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <button onclick="exportData()" class="bg-amber-600 hover:bg-amber-500 text-white px-5 py-2.5 text-sm font-bold border-2 border-amber-400 shadow-[3px_3px_0px_#fff] transition-all flex items-center gap-2">
+            <i class="fa-solid fa-file-export"></i> 匯出資料庫 (JSON)
+          </button>
+        </div>
+      </div>
+
+      <!-- 📊 Stat Display Wall -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-6 border-t border-gray-700/80">
+        <div class="bg-zinc-900/90 p-3.5 rounded border border-zinc-700 shadow-inner">
+          <div class="text-xs font-bold text-gray-400 uppercase tracking-wider">收錄權威教授</div>
+          <div class="text-2xl sm:text-3xl font-black text-amber-500 mt-1">10 <span class="text-xs font-bold text-gray-300">團隊</span></div>
+        </div>
+        <div class="bg-zinc-900/90 p-3.5 rounded border border-zinc-700 shadow-inner">
+          <div class="text-xs font-bold text-gray-400 uppercase tracking-wider">深度分析論文庫</div>
+          <div class="text-2xl sm:text-3xl font-black text-emerald-400 mt-1">270+ <span class="text-xs font-bold text-gray-300">篇</span></div>
+        </div>
+        <div class="bg-zinc-900/90 p-3.5 rounded border border-zinc-700 shadow-inner">
+          <div class="text-xs font-bold text-gray-400 uppercase tracking-wider">核心適應症模型</div>
+          <div class="text-2xl sm:text-3xl font-black text-sky-400 mt-1">14+ <span class="text-xs font-bold text-gray-300">大類</span></div>
+        </div>
+        <div class="bg-zinc-900/90 p-3.5 rounded border border-zinc-700 shadow-inner">
+          <div class="text-xs font-bold text-gray-400 uppercase tracking-wider">微氣泡/超音波論文</div>
+          <div class="text-2xl sm:text-3xl font-black text-purple-400 mt-1">75+ <span class="text-xs font-bold text-gray-300">篇</span></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 🔍 Global Search & Controls Section -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-8">
+    
+    <div class="newspaper-card p-5 sm:p-6 mb-8">
+      <div class="flex flex-col lg:flex-row gap-4 items-stretch mb-5">
+        <!-- Input Engine -->
+        <div class="relative flex-1">
+          <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 text-lg"></i>
+          <input type="text" id="searchInput" onkeyup="filterData()" placeholder="輸入關鍵字（例如：乳癌、TNBC、胰臟癌、腦瘤、微氣泡、葉秩光、邱信程、STING、外泌體）..." class="w-full pl-12 pr-10 py-3.5 bg-white border-2 border-zinc-800 focus:outline-none focus:border-amber-600 font-semibold text-base placeholder:text-gray-400">
+          <button onclick="clearSearch()" id="clearBtn" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-700 text-lg p-1">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+        
+        <!-- Filter Selector -->
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-black text-gray-700 whitespace-nowrap uppercase tracking-wider"><i class="fa-solid fa-user-check mr-1 text-amber-600"></i>指導模式:</span>
+          <select id="soloFilter" onchange="filterData()" class="py-3.5 px-4 border-2 border-zinc-800 bg-white font-bold text-sm focus:outline-none focus:border-amber-600 cursor-pointer">
+            <option value="all">全部論文 (單獨 + 共同指導)</option>
+            <option value="solo">僅看單獨指導 (Solo)</option>
+            <option value="co">僅看共同指導 (Co-Op)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Quick Tag Filter Row -->
+      <div>
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs font-black text-gray-600 uppercase tracking-wider flex items-center gap-1">
+            <i class="fa-solid fa-tags text-amber-600"></i> 熱門適應症與關鍵技術快選:
+          </span>
+          <span id="resultCount" class="text-xs font-bold text-amber-700 bg-amber-100 px-2.5 py-0.5 rounded border border-amber-300">
+            顯示所有 10 個核心領域
+          </span>
+        </div>
+        <div class="flex flex-wrap gap-2" id="tagList">
+          <!-- Tags injected dynamically via JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- 📌 Perspective Switcher Tabs -->
+    <div class="flex flex-wrap border-b-2 border-zinc-800 mb-6 gap-1">
+      <button id="tab-disease" onclick="switchTab('disease')" class="px-6 py-3 font-extrabold border-t-2 border-x-2 border-zinc-800 bg-amber-600 text-white -mb-[2px] shadow-sm flex items-center gap-2">
+        <i class="fa-solid fa-bullseye"></i> 🎯 適應症模型視角
+      </button>
+      <button id="tab-professor" onclick="switchTab('professor')" class="px-6 py-3 font-extrabold border-t-2 border-x-2 border-zinc-800 bg-white text-gray-700 -mb-[2px] flex items-center gap-2 hover:bg-amber-50">
+        <i class="fa-solid fa-user-tie"></i> 👨‍🏫 教授資產寶庫視角 (10)
+      </button>
+      <button id="tab-matrix" onclick="switchTab('matrix')" class="px-6 py-3 font-extrabold border-t-2 border-x-2 border-zinc-800 bg-white text-gray-700 -mb-[2px] flex items-center gap-2 hover:bg-amber-50">
+        <i class="fa-solid fa-chart-pie"></i> 📊 矩陣統計視角
+      </button>
+    </div>
+
+    <!-- VIEW 1: Indication/Disease View (Default) -->
+    <div id="view-disease" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Dynamic Disease Cards -->
+    </div>
+
+    <!-- VIEW 2: Professor Asset Vault View -->
+    <div id="view-professor" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Dynamic Professor Cards -->
+    </div>
+
+    <!-- VIEW 3: Indication vs Professor Matrix View -->
+    <div id="view-matrix" class="hidden newspaper-card p-6">
+      <h3 class="text-xl font-black mb-4 flex items-center gap-2 text-zinc-900 border-b-2 border-zinc-800 pb-2">
+        <i class="fa-solid fa-table-cells text-amber-600"></i> 10 位教授 vs 核心適應症研究佈局總覽表
+      </h3>
+      <div class="overflow-x-auto">
+        <table class="w-full text-xs text-left border-collapse border border-zinc-800">
+          <thead>
+            <tr class="bg-zinc-900 text-white text-center font-bold">
+              <th class="p-3 border border-zinc-700">教授姓名</th>
+              <th class="p-3 border border-zinc-700">單位</th>
+              <th class="p-3 border border-zinc-700 bg-rose-900/70">乳癌/TNBC</th>
+              <th class="p-3 border border-zinc-700 bg-amber-900/70">胰臟癌</th>
+              <th class="p-3 border border-zinc-700 bg-indigo-900/70">腦瘤/GBM</th>
+              <th class="p-3 border border-zinc-700 bg-sky-900/70">肺轉移/癌</th>
+              <th class="p-3 border border-zinc-700 bg-emerald-900/70">TBI創傷</th>
+              <th class="p-3 border border-zinc-700 bg-purple-900/70">微氣泡/聲學</th>
+              <th class="p-3 border border-zinc-700">主要亮點技術/模型</th>
+            </tr>
+          </thead>
+          <tbody id="matrixTableBody" class="font-medium">
+            <!-- Rendered via JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- 📜 Detailed Paper List Modal Dialog -->
+  <div id="paperModal" class="fixed inset-0 bg-black/70 hidden backdrop-blur-sm flex items-center justify-center p-4 z-50">
+    <div class="bg-white border-4 border-zinc-900 w-full max-w-4xl max-h-[88vh] flex flex-col shadow-[10px_10px_0px_#18181b] relative">
+      <!-- Modal Header -->
+      <div class="p-5 bg-zinc-900 text-white border-b-2 border-zinc-800 flex justify-between items-center">
+        <div>
+          <span id="modalCategoryBadge" class="bg-amber-600 text-white text-[10px] font-black px-2 py-0.5 tracking-wider uppercase">適應症清單</span>
+          <h2 id="modalTitle" class="text-xl sm:text-2xl font-black mt-1 text-amber-400">論文資產明細</h2>
+        </div>
+        <button onclick="closeModal()" class="w-9 h-9 flex items-center justify-center bg-zinc-800 hover:bg-amber-600 text-white font-black rounded border border-zinc-600 transition-colors">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+      <!-- Modal Body (Scrollable) -->
+      <div id="modalContent" class="p-6 overflow-y-auto flex-1 space-y-4">
+        <!-- Papers Injected Here -->
+      </div>
+      <!-- Modal Footer -->
+      <div class="p-4 bg-zinc-100 border-t border-zinc-300 flex justify-between items-center">
+        <span id="modalPaperCount" class="text-xs font-bold text-gray-600">共收錄論文：0 篇</span>
+        <button onclick="closeModal()" class="bg-zinc-900 hover:bg-amber-600 text-white font-bold px-5 py-2 text-xs border-2 border-zinc-900 transition-colors">
+          關閉視窗
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification Toast Container -->
+  <div id="toast" class="fixed bottom-5 right-5 bg-zinc-900 text-white px-5 py-3 border-2 border-amber-500 shadow-[4px_4px_0px_#000] hidden z-50 flex items-center gap-3">
+    <i class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
+    <span id="toastMsg" class="text-sm font-bold"></span>
+  </div>
+
+  <script>
+    // 📚 Comprehensive Database of 10 Pioneer Professors & Papers
+    const db = {
+      professors: [
+        { id: "hu", name: "胡尚秀", dept: "清大生醫", focus: "磁電效應、CNS血腦屏障、肺轉移、創傷性腦損傷 (TBI)", count: 30 },
+        { id: "chiu", name: "邱信程", dept: "清大生醫", focus: "三陰性乳癌 (TNBC)、SLN 固態脂質、大腸癌肺轉移、PROTAC、鐵死亡", count: 30 },
+        { id: "chang", name: "張建文", dept: "清大生醫", focus: "相變液滴超音波對比劑、TNBC、腦膠質腫瘤、幹細胞軟骨修復", count: 30 },
+        { id: "chen_cs", name: "陳之碩", dept: "清大生醫", focus: "3D乳癌腫瘤球、GBM、微流道器官晶片、BNCT微環境硬度", count: 30 },
+        { id: "chen_fh", name: "陳芳馨", dept: "清大核工", focus: "乳癌骨轉移、BNCT 胰臟癌、質子治療併免疫(HCC)、SQAP放療增敏", count: 11 },
+        { id: "chen_yc", name: "陳韻晶", dept: "清大生醫", focus: "原位乳癌疫苗、標靶巨噬細胞 (TAMs)、STING 刺激劑、一氧化氮 (NO)", count: 30 },
+        { id: "yeh", name: "葉秩光", dept: "清大生醫", focus: "超音波微氣泡、帶氧微氣泡、聲鉗、癲癇、缺血性中風、血管鈣化", count: 30 },
+        { id: "liu", name: "劉浩澧", dept: "臺大電機/生醫", focus: "聚焦超音波 (FUS)、血腦屏障 (BBB) 開啟、被動影像導引、超音波陣列", count: 30 },
+        { id: "hsieh", name: "謝達斌", dept: "成大牙醫", focus: "零價鐵奈米粒子 (鐵死亡)、頭頸癌/OSCC、PD-L1/Gal-1 Aptamer", count: 30 },
+        { id: "tseng", name: "曾繁根", dept: "清大工心", focus: "微流體腫瘤晶片 (大腸癌轉移/肝臟代謝)、BNCT 胰臟癌、CTC 高光譜 AI", count: 30 }
+      ],
+
+      diseases: [
+        {
+          id: "breast",
+          title: "🎀 乳癌 / 三陰性乳癌 (Breast Cancer & TNBC)",
+          badge: "核心高頻適應症",
+          desc: "包含三陰性乳癌 (TNBC) 之 PROTAC 系統、焦亡/鐵死亡光熱免疫、原位乳癌水膠疫苗、3D乳癌腫瘤球放化療篩選、葛仙米藻萃取物抑制乳癌骨轉移及幹細胞治療應用。",
+          profs: ["邱信程", "張建文", "陳之碩", "陳芳馨", "陳韻晶"],
+          papers: [
+            { prof: "邱信程", year: "114", student: "宋翔韻", title: "焦亡誘導多功能奈米粒子作為三陰性乳癌之光熱/光動力協同免疫活化治療", type: "solo", tech: "焦亡/光熱/免疫活化" },
+            { prof: "邱信程", year: "114", student: "游善能", title: "利用樹狀高分子為基底之 PROTAC 系統提升 p70S6K 降解效率於三陰性乳癌中的應用研究", type: "solo", tech: "PROTAC/樹狀高分子" },
+            { prof: "邱信程", year: "107", student: "王得銘", title: "開發具免疫調節之固態脂質奈米粒子結合放射線與免疫療法於原位乳癌之應用", type: "solo", tech: "固態脂質奈米粒子 (SLN)" },
+            { prof: "張建文", year: "112", student: "李湘慈", title: "奈米材料工程改造幹細胞製備及其在三陰性乳癌治療應用", type: "solo", tech: "幹細胞工程/奈米材料" },
+            { prof: "陳之碩", year: "114", student: "劉權慧", title: "應用微流道晶片平台探討生理流場調控三維乳癌腫瘤球侵襲行為與放化療反應", type: "solo", tech: "3D乳癌腫瘤球/微流道晶片" },
+            { prof: "陳芳馨", year: "113", student: "張念慈", title: "利用小動物電腦斷層分析葛仙米藻萃取物對乳癌骨轉移的生物效應", type: "co", coProf: "劉威忠", tech: "小動物CT/骨轉移" },
+            { prof: "陳韻晶", year: "109", student: "鄭聖良", title: "搭載免疫刺激因子之水膠疫苗作為小鼠原位乳癌模型之治療", type: "co", coProf: "林玉俊", tech: "原位乳癌/水膠疫苗" }
+          ]
+        },
+        {
+          id: "pancreatic",
+          title: "🎗️ 胰臟癌與基質重塑 (Pancreatic Cancer)",
+          badge: "難治型癌症標靶",
+          desc: "聚焦於突破胰臟癌濃厚的纖維化基質障礙，調控腫瘤相關巨噬細胞 (TAMs)、STING 刺激劑，以及硼中子捕獲療法 (BNCT) 增敏效果與微流體晶片。",
+          profs: ["邱信程", "陳芳馨", "陳韻晶", "曾繁根"],
+          papers: [
+            { prof: "陳韻晶", year: "114", student: "張維宸", title: "開發靶向腫瘤相關巨噬細胞之奈米顆粒於重塑胰臟癌腫瘤微環境", type: "co", coProf: "黃玠誠", tech: "TAMs標靶/基質重塑" },
+            { prof: "陳韻晶", year: "114", student: "李欣玫", title: "標靶腫瘤相關巨噬細胞的奈米粒子搭載干擾素刺激因子以用於胰臟癌基質與免疫微環境的重塑", type: "solo", tech: "STING/巨噬細胞標靶" },
+            { prof: "邱信程", year: "111", student: "林羿萱", title: "製備具有逆轉胰臟星狀細胞活化態的仿生雜合膜奈米藥物改變腫瘤微環境以提升胰臟癌的化療/放療效果", type: "solo", tech: "仿生雜合膜/星狀細胞" },
+            { prof: "邱信程", year: "111", student: "蕭雅文", title: "利用脂質/中孔矽殼包覆硫化鉍之奈米藥物於胰臟癌化學/放射合併治療應用", type: "solo", tech: "中孔矽/硫化鉍" },
+            { prof: "陳芳馨", year: "114", student: "鄭晴予", title: "奈米載體增強硼中子捕獲治療於胰臟癌的效果:與傳統BPA之比較研究", type: "solo", tech: "BNCT/奈米載體" },
+            { prof: "曾繁根", year: "114", student: "李季恒", title: "葉酸修飾硼酸-聚乙烯醇奈米藥物於胰臟癌硼中子捕獲療法之應用與效果探討", type: "solo", tech: "BNCT/葉酸修飾" }
+          ]
+        },
+        {
+          id: "gbm",
+          title: "🧠 膠質母細胞瘤 / 腦腫瘤 (GBM & Brain Glioma)",
+          badge: "CNS 關鍵攻克目標",
+          desc: "血腦屏障 (BBB) 是藥物進腦主要障礙。結合聚焦超音波微氣泡開啟 BBB、硼中子捕獲 (BNCT)、零價鐵鐵死亡及磁電/光催化載體進行深部攻克。",
+          profs: ["胡尚秀", "葉秩光", "劉浩澧", "張建文", "陳之碩", "陳芳馨", "陳韻晶", "謝達斌"],
+          papers: [
+            { prof: "胡尚秀", year: "114", student: "丁尹彤", title: "具粒線體標靶功能之碳摻雜二氧化矽奈米載體:啟動雙源細胞色素c凋亡協同硼中子捕獲治療應用於腦瘤治療", type: "solo", tech: "碳矽奈米/BNCT" },
+            { prof: "胡尚秀", year: "113", student: "石芯瑀", title: "STING介導之具模擬細胞膜共聚物包覆Fe單原子粒子應用於增強光催化動力效應於滲透腦瘤免疫治療", type: "solo", tech: "Fe單原子/STING" },
+            { prof: "葉秩光", year: "114", student: "姜珮華", title: "用於影像導引藥物遞送之超音波響應奈米平台應用於大腦疾病治療", type: "solo", tech: "超音波響應/影像導引" },
+            { prof: "劉浩澧", year: "112", student: "Nguyen Hoang Trung", title: "應用空穴效應與光學同調影像導引雷射燒蝕於腦腫瘤精準診斷與治療", type: "co", coProf: "蔡孟燦", tech: "空穴效應/聚焦超音波" },
+            { prof: "張建文", year: "103", student: "黃蜂運", title: "鍊-188標誌奈米微脂體於大鼠腦神經膠質腫瘤之診療評估", type: "co", coProf: "羅建苗", tech: "微脂體/核醫診療" },
+            { prof: "陳之碩", year: "112", student: "劉珈均", title: "腫瘤微環境硬度於硼中子捕獲治療在神經膠質母細胞瘤的生物反應影響", type: "solo", tech: "微環境硬度/BNCT" },
+            { prof: "陳芳馨", year: "112", student: "紀名蔚", title: "探討光子治療以及硼中子捕獲治療在高侵襲性惡性腦癌之療效差異", type: "solo", tech: "BNCT/光子治療" },
+            { prof: "陳韻晶", year: "112", student: "連芸晨", title: "STING 刺激劑奈米粒子之應用於多形性膠質母細胞瘤治療", type: "solo", tech: "STING/巨噬細胞" },
+            { prof: "謝達斌", year: "112", student: "吳宣儒", title: "零價鐵奈米粒子表面修飾標靶物質對治療膠質母細胞瘤之增益", type: "solo", tech: "零價鐵/鐵死亡" }
+          ]
+        },
+        {
+          id: "lung",
+          title: "🫁 肺轉移腫瘤 / 肺癌 (Lung Metastasis & NSCLC)",
+          badge: "器官標靶藥物遞送",
+          desc: "利用血管邊際效應、紅血球搭便車、雙原子催化劑及零價鐵奈米粒子進行肺轉移腫瘤與非小細胞肺癌 (NSCLC) 之免疫與鐵死亡治療。",
+          profs: ["胡尚秀", "邱信程", "謝達斌"],
+          papers: [
+            { prof: "胡尚秀", year: "114", student: "陳欣渝", title: "仿生共聚物包覆氧化鐵修飾碲化鉍奈米複合材料透過磁誘導熱電效應應用於肺轉移腫瘤免疫治療", type: "solo", tech: "磁誘導熱電效應" },
+            { prof: "胡尚秀", year: "112", student: "黃氏美惠", title: "具邊際效應標靶肺部遞送藥物載體應用於程式化抗原捕捉傳遞於樹突細胞", type: "solo", tech: "樹突細胞抗原捕捉" },
+            { prof: "胡尚秀", year: "112", student: "張皓旻", title: "應用於肺轉移之RNAi免疫檢查點阻斷劑:紅血球搭便車共同遞送不同形貌脂質奈米顆粒與PD-L1 siRNA", type: "solo", tech: "紅血球搭便車/siRNA" },
+            { prof: "邱信程", year: "114", student: "李東晉", title: "陽離子脂質修飾鈷/銥雙原子催化劑協同小分子激動劑用於大腸直腸癌肺轉移之化學動力/免疫治療", type: "solo", tech: "雙原子催化劑/CDT" },
+            { prof: "謝達斌", year: "108", student: "石馥瑄", title: "零價鐵奈米粒子誘導非小細胞肺癌的鐵依賴型細胞凋亡和調控腫瘤微環境免疫細胞之機制探討", type: "co", coProf: "王憶卿", tech: "零價鐵/鐵死亡/NSCLC" }
+          ]
+        },
+        {
+          id: "tbi",
+          title: "💥 創傷性腦損傷 / 神經修復 (TBI & Neural Regeneration)",
+          badge: "非腫瘤熱門適應症",
+          desc: "結合超音波微氣泡幹細胞遷移、磁電導電微球 (miR-6236)、外泌體緩釋、一氧化氮 (NO) 血小板膜修飾與傷口水凝膠系統。",
+          profs: ["胡尚秀", "葉秩光", "張建文"],
+          papers: [
+            { prof: "胡尚秀", year: "113", student: "白清華", title: "無線磁電驅動導電微球調控神經 miR-6236 合併緩釋外泌體應用於創傷性腦損傷後神經再生", type: "solo", tech: "無線磁電/外泌體/miR-6236" },
+            { prof: "胡尚秀", year: "112", student: "劉秀晴", title: "具備緩釋外泌體能力協同氫氣釋放之雙層微球用於促進創傷性腦損傷修復", type: "solo", tech: "氫氣緩釋/雙層微球" },
+            { prof: "胡尚秀", year: "112", student: "徐佳玥", title: "利用高周波釋放一氧化氮的血小板膜修飾金奈米粒子應用於治療創傷性腦損傷的神經修復", type: "solo", tech: "一氧化氮/血小板膜" },
+            { prof: "葉秩光", year: "113", student: "林玠吾", title: "聚焦式超音波結合微氣泡提升間質幹細胞向腦部遷移之機制研究", type: "solo", tech: "聚焦超音波/微氣泡/幹細胞" },
+            { prof: "張建文", year: "109", student: "黃韋翔", title: "設計醣類應答水凝膠系統作為三維細胞外間質製備與傷口修復應用", type: "solo", tech: "水凝膠/組織修復" }
+          ]
+        },
+        {
+          id: "hcc",
+          title: "🩸 肝細胞癌 / 肝癌 (Hepatocellular Carcinoma, HCC)",
+          badge: "消化道重大癌症",
+          desc: "包含質子放射治療聯合免疫與抗血管生成、標靶 ASGPR 之半乳糖衍生物、一氧化氮 (NO) 供體克服抗藥性與葡萄糖氧化酶 (GOx) 酸鹼應答載體。",
+          profs: ["陳芳馨", "陳韻晶", "曾繁根"],
+          papers: [
+            { prof: "陳芳馨", year: "114", student: "沈思妤", title: "質子放射治療聯合免疫與抗血管生成療法於小鼠肝細胞癌模型之治療潛力探討", type: "solo", tech: "質子治療/抗血管生成" },
+            { prof: "陳韻晶", year: "114", student: "謝玉燕兒", title: "開發遞送葡萄糖氧化酶之酸鹼應答型載體以增強對肝細胞癌之抗癌效果", type: "solo", tech: "GOx/酸鹼應答" },
+            { prof: "陳韻晶", year: "113", student: "蘇尹雯", title: "開發增強巨噬細胞吞噬與活化STING通路的雙功能奈米粒子以治療肝細胞癌", type: "solo", tech: "STING/巨噬細胞吞噬" },
+            { prof: "陳韻晶", year: "108", student: "宋雲傑", title: "開發高分子載體遞送一氧化氮以調控腫瘤微環境克服肝癌之抗藥性", type: "co", coProf: "王潔", tech: "一氧化氮 (NO)/抗藥性" },
+            { prof: "曾繁根", year: "113", student: "陳睿維", title: "利用微流體器官晶片建構肝臟代謝功能模型探討其對腫瘤藥物反應之調控", type: "co", coProf: "洪明秀", tech: "微流體肝臟晶片/藥物代謝" }
+          ]
+        },
+        {
+          id: "headneck",
+          title: "🦷 頭頸癌 / 口腔鱗狀細胞癌 (Head & Neck Cancer / OSCC)",
+          badge: "生醫材料專精",
+          desc: "包含零價鐵奈米粒子 (鐵死亡)、Galectin-1/PD-L1 Aptamer 奈米藥物、TiO2/CuS 奈米異質結構 (飢餓+光免疫) 與 MXene 奈米馬達。",
+          profs: ["胡尚秀", "謝達斌"],
+          papers: [
+            { prof: "胡尚秀", year: "113", student: "陳玉智", title: "利用TiO2/CuS奈米異質結構結合飢餓療法與光免疫療法治療口腔鱗狀細胞癌", type: "solo", tech: "TiO2/CuS/飢餓光免疫" },
+            { prof: "胡尚秀", year: "112", student: "朱詩琳", title: "使用裝載氨硼烷的MXene奈米馬達進行光熱治療用於口腔癌的免疫治療和轉移抑制", type: "solo", tech: "MXene奈米馬達/氨硼烷" },
+            { prof: "謝達斌", year: "110", student: "鄭瑞", title: "設計針對Galectin-1的aptamer與FTY720連接的奈米藥物在頭頸癌治療效果探討", type: "solo", tech: "Galectin-1 Aptamer/FTY720" },
+            { prof: "謝達斌", year: "107", student: "陳靜怡", title: "零價鐵金核殼奈米粒子在正常和口腔癌上皮細胞內結構轉變與分子訊息傳遞以及區別性癌細胞毒殺機制的探討", type: "solo", tech: "零價鐵金核殼/細胞毒殺" }
+          ]
+        },
+        {
+          id: "microbubble",
+          title: "🫧 超音波微氣泡與聲學操控 (Ultrasound & Microbubbles)",
+          badge: "核心技術平台",
+          desc: "涵蓋帶氧微氣泡、壓電 MoS2 微氣泡、紅血球相變液滴、漩渦式超音波聲鉗、被動影像導引 (PMA) 與血腦屏障 (BBB) 聲空穴開關監控。",
+          profs: ["葉秩光", "劉浩澧", "張建文"],
+          papers: [
+            { prof: "葉秩光", year: "114", student: "周旻樺", title: "使用壓電 MoS2 奈米層片載附於微氣泡進行非侵入性神經調控用於癲瘤治療", type: "solo", tech: "壓電 MoS2/微氣泡" },
+            { prof: "葉秩光", year: "110", student: "鄭翔隆", title: "聚焦式超音波結合帶氧微氣泡治療缺血性中風再灌注後腦梗塞與神經保護", type: "solo", tech: "帶氧微氣泡/中風修復" },
+            { prof: "葉秩光", year: "109", student: "羅尉辰", title: "以龍捲風為靈感之漩渦式超音波聲鉗用於微氣泡之捕捉與操控", type: "solo", tech: "漩渦聲鉗/微氣泡操控" },
+            { prof: "劉浩澧", year: "113", student: "陳品如", title: "被動影像導引聚焦超音波治療系統", type: "solo", tech: "被動影像導引/FUS" },
+            { prof: "劉浩澧", year: "106", student: "蔡至洪", title: "空穴效應監控應用於超音波血腦屏障開啟", type: "solo", tech: "空穴效應/BBB開啟" },
+            { prof: "張建文", year: "102", student: "謝承展", title: "開發紅血球細胞膜衍伸相變液滴作為可遙控觸發藥物載體及超音波對比劑", type: "solo", tech: "相變液滴/超音波對比劑" }
+          ]
+        },
+        {
+          id: "colorectal",
+          title: "🩸 大腸直腸癌轉移與微流體晶片 (Colorectal Cancer & Chips)",
+          badge: "消化道腫瘤與微流道",
+          desc: "包含固態脂質 SLN 藥物遞送、雙原子催化劑肺轉移治療、COF 奈米粒子抗原捕捉，以及微流體肝臟器官晶片模擬轉移代謝。",
+          profs: ["胡尚秀", "邱信程", "陳之碩", "曾繁根"],
+          papers: [
+            { prof: "胡尚秀", year: "111", student: "陳品華", title: "探索共價有機框架奈米粒子的形狀效應用於大腸癌肺轉移的免疫治療中的抗原捕捉", type: "solo", tech: "COF奈米粒子/形狀效應" },
+            { prof: "邱信程", year: "112", student: "龔靖雅", title: "製備搭載阿黴素/硫辛酸之固態脂質奈米粒子以提升大腸直腸癌的化療效果", type: "solo", tech: "SLN/硫辛酸" },
+            { prof: "陳之碩", year: "107", student: "黃厚竣", title: "ALDOB與SLC16A4在缺氧及硬化結締組織微環境下誘導大腸直腸癌中糖代謝重塑", type: "solo", tech: "糖代謝重塑/微環境" },
+            { prof: "曾繁根", year: "113", student: "柯宜汶", title: "利用微流體腫瘤晶片探討血管微環境與肝臟代謝對大腸直腸癌轉移行為與藥物反應之影響", type: "co", coProf: "楊重熙", tech: "微流體腫瘤晶片/肝臟代謝" }
+          ]
+        },
+        {
+          id: "ctc_chips",
+          title: "🔬 循環腫瘤細胞 (CTC) 與晶片檢測 (CTC & Microfluidics)",
+          badge: "高通量篩選 diagnostic",
+          desc: "運用微流體細胞自組裝陣列、高光譜影像 (Hyperspectral Imaging) 結合雙分支 CNN/AI 深度學習實現 CTC 與 T 細胞精準辨識與分選。",
+          profs: ["曾繁根", "陳之碩"],
+          papers: [
+            { prof: "曾繁根", year: "114", student: "洪晨熙", title: "基於高光譜影像與雙分支卷積神經網路之T細胞及其亞群自動辨識", type: "solo", tech: "高光譜影像/CNN AI" },
+            { prof: "曾繁根", year: "113", student: "陳奕文", title: "結合高光譜影像與多分支集成模型於循環腫瘤細胞、循環混合細胞與白血球辨別", type: "solo", tech: "CTC分選/高光譜AI" },
+            { prof: "曾繁根", year: "113", student: "李尚臻", title: "利用 AI-PRS 調控培養因子進行CTC 離體擴增、藥物篩檢", type: "solo", tech: "AI-PRS/CTC離體擴增" },
+            { prof: "陳之碩", year: "111", student: "魏琇玫", title: "以高通量磁鉗系統研究皮牛頓機械力對細胞機械轉導之影響", type: "solo", tech: "高通量磁鉗/機械轉導" }
+          ]
+        }
+      ]
+    };
+
+    // Quick Option Tags for Quick Filtering
+    const tags = [
+      "全部", 
+      "🎀 乳癌 / TNBC", 
+      "🎗️ 胰臟癌", 
+      "🧠 腦瘤 / GBM", 
+      "🫁 肺轉移", 
+      "💥 創傷性腦損傷", 
+      "🩸 肝細胞癌 (HCC)", 
+      "🦷 口腔 / 頭頸癌", 
+      "🫧 超音波微氣泡", 
+      "🚧 血腦屏障 (BBB)", 
+      "🛡️ 免疫 / 鐵死亡"
+    ];
+
+    let currentActiveTag = "全部";
+
+    // 🚀 Application Initialization
+    document.addEventListener("DOMContentLoaded", () => {
+      renderTags();
+      renderDiseaseView(db.diseases);
+      renderProfessorView();
+      renderMatrixView();
+      updateResultCount(db.diseases.length);
+    });
+
+    // 🏷️ Render Quick Tag Buttons
+    function renderTags() {
+      const tagContainer = document.getElementById("tagList");
+      tagContainer.innerHTML = tags.map(tag => `
+        <button onclick="filterByTag('${tag}', this)" class="tag-btn text-xs font-bold border-2 border-zinc-800 bg-white px-3 py-1.5 text-zinc-800 hover:border-amber-600 ${tag === '全部' ? 'active' : ''}">
+          ${tag}
+        </button>
+      `).join('');
+    }
+
+    // 🎯 Render Indication/Disease View Cards
+    function renderDiseaseView(diseasesToRender) {
+      const container = document.getElementById("view-disease");
+      
+      if (diseasesToRender.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full newspaper-card p-12 text-center">
+            <i class="fa-regular fa-folder-open text-5xl text-gray-400 mb-3 block"></i>
+            <h4 class="text-xl font-bold text-gray-700">未找到符合條件的疾病模型或論文</h4>
+            <p class="text-sm text-gray-500 mt-1">請嘗試縮短關鍵字，或切換為「全部」標籤重試。</p>
+            <button onclick="clearSearch()" class="mt-4 bg-amber-600 text-white font-bold px-4 py-2 text-xs border border-zinc-800 shadow-[2px_2px_0px_#000]">重設搜尋條件</button>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = diseasesToRender.map(d => `
+        <div class="newspaper-card p-6 flex flex-col justify-between">
+          <div>
+            <div class="flex justify-between items-start mb-3 gap-2">
+              <h3 class="text-xl font-black text-zinc-900 leading-snug">${d.title}</h3>
+              <span class="bg-amber-100 text-amber-900 text-xs font-black px-2.5 py-1 border border-amber-400 whitespace-nowrap shadow-sm">${d.badge}</span>
+            </div>
+            <p class="text-xs sm:text-sm text-gray-700 font-medium mb-4 leading-relaxed">${d.desc}</p>
+            
+            <!-- Participating Professors Badge Row -->
+            <div class="mb-4">
+              <span class="text-xs font-black text-gray-500 uppercase tracking-wider block mb-1.5">
+                <i class="fa-solid fa-users-gear text-amber-600 mr-1"></i>核心投入教授團隊：
+              </span>
+              <div class="flex flex-wrap gap-1.5">
+                ${d.profs.map(p => `<span class="bg-zinc-800 text-white text-xs px-2.5 py-0.5 font-bold border border-zinc-900 shadow-sm">${p} 教授</span>`).join('')}
+              </div>
+            </div>
+
+            <!-- Representative Papers Preview Section -->
+            <div class="space-y-2 border-t-2 border-zinc-200 pt-3">
+              <span class="text-xs font-black text-gray-500 uppercase tracking-wider block">
+                <i class="fa-solid fa-scroll text-amber-600 mr-1"></i>代表性論文資產片段 (展示前 ${Math.min(3, d.papers.length)} 筆)：
+              </span>
+              ${d.papers.slice(0, 3).map(p => `
+                <div class="bg-white p-2.5 border border-zinc-300 text-xs hover:border-amber-500 transition-colors">
+                  <div class="flex justify-between items-center font-bold text-gray-700 mb-1">
+                    <span class="text-zinc-900">${p.prof} 教授 <span class="${p.type === 'solo' ? 'text-emerald-700 bg-emerald-50 px-1.5 py-0.2 border border-emerald-300' : 'text-amber-700 bg-amber-50 px-1.5 py-0.2 border border-amber-300'}">[${p.type === 'solo' ? '單獨指導' : '共同: '+p.coProf}]</span></span>
+                    <span class="text-gray-400 font-semibold">${p.year}學年 (${p.student})</span>
+                  </div>
+                  <div class="font-bold text-zinc-900 line-clamp-1">${p.title}</div>
+                  <div class="mt-1 flex items-center gap-1 text-[10px]">
+                    <span class="bg-zinc-100 text-zinc-700 font-bold px-1.5 py-0.2 border border-zinc-300"><i class="fa-solid fa-microchip text-amber-600"></i> ${p.tech}</span>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+
+          <button onclick="openModal('${d.title}', '${d.id}')" class="mt-5 w-full bg-zinc-900 hover:bg-amber-600 text-white font-bold py-2.5 text-xs sm:text-sm border-2 border-zinc-900 transition-colors flex items-center justify-center gap-2 shadow-[2px_2px_0px_#000]">
+            <i class="fa-solid fa-list-check"></i> 查看該領域完整學術論文資產 (${d.papers.length} 篇)
+          </button>
+        </div>
+      `).join('');
+    }
+
+    // 👨‍🏫 Render Professor Assets View
+    function renderProfessorView() {
+      const container = document.getElementById("view-professor");
+      container.innerHTML = db.professors.map(p => `
+        <div class="newspaper-card p-5 flex flex-col justify-between">
+          <div>
+            <div class="flex justify-between items-center mb-2 border-b border-zinc-300 pb-2">
+              <h3 class="text-xl font-black text-zinc-900">${p.name} 教授</h3>
+              <span class="text-xs font-extrabold bg-amber-600 text-white px-2.5 py-0.5 border border-amber-700">${p.dept}</span>
+            </div>
+            <p class="text-xs font-bold text-gray-700 mb-3 leading-relaxed min-h-[40px]">
+              <i class="fa-solid fa-crosshairs text-amber-600 mr-1"></i>核心方向: ${p.focus}
+            </p>
+          </div>
+          <div class="border-t-2 border-zinc-800 pt-3 flex justify-between items-center text-xs">
+            <span class="font-bold text-gray-600">收錄論文: <b class="text-zinc-900 font-black text-sm">${p.count} 篇</b></span>
+            <button onclick="filterByProfName('${p.name}')" class="bg-zinc-900 hover:bg-amber-600 text-white px-3 py-1.5 font-bold transition-colors">
+              搜尋該教授論文
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // 📊 Render Indication Matrix View
+    function renderMatrixView() {
+      const tbody = document.getElementById("matrixTableBody");
+      tbody.innerHTML = db.professors.map((p, idx) => {
+        const hasBreast = db.diseases.find(d => d.id === 'breast').profs.includes(p.name);
+        const hasPancreatic = db.diseases.find(d => d.id === 'pancreatic').profs.includes(p.name);
+        const hasGbm = db.diseases.find(d => d.id === 'gbm').profs.includes(p.name);
+        const hasLung = db.diseases.find(d => d.id === 'lung').profs.includes(p.name);
+        const hasTbi = db.diseases.find(d => d.id === 'tbi').profs.includes(p.name);
+        const hasMicrobubble = db.diseases.find(d => d.id === 'microbubble').profs.includes(p.name);
+
+        return `
+          <tr class="${idx % 2 === 0 ? 'bg-white' : 'bg-amber-50/40'} hover:bg-amber-100/50 transition-colors">
+            <td class="p-2.5 border border-zinc-700 font-black text-zinc-900 text-center">${p.name}</td>
+            <td class="p-2.5 border border-zinc-700 text-gray-600 text-center font-bold">${p.dept}</td>
+            <td class="p-2.5 border border-zinc-700 text-center font-bold">${hasBreast ? '✅' : '-'}</td>
+            <td class="p-2.5 border border-zinc-700 text-center font-bold">${hasPancreatic ? '✅' : '-'}</td>
+            <td class="p-2.5 border border-zinc-700 text-center font-bold">${hasGbm ? '✅' : '-'}</td>
+            <td class="p-2.5 border border-zinc-700 text-center font-bold">${hasLung ? '✅' : '-'}</td>
+            <td class="p-2.5 border border-zinc-700 text-center font-bold">${hasTbi ? '✅' : '-'}</td>
+            <td class="p-2.5 border border-zinc-700 text-center font-bold">${hasMicrobubble ? '✅' : '-'}</td>
+            <td class="p-2.5 border border-zinc-700 font-semibold text-gray-800">${p.focus}</td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // 🔍 Deep Search Engine Function
+    function filterData() {
+      const query = document.getElementById("searchInput").value.trim().toLowerCase();
+      const soloFilter = document.getElementById("soloFilter").value;
+      const clearBtn = document.getElementById("clearBtn");
+
+      if (query !== "") {
+        clearBtn.classList.remove("hidden");
+      } else {
+        clearBtn.classList.add("hidden");
+      }
+
+      const filteredDiseases = db.diseases.map(d => {
+        // Filter papers based on query and solo/co-op mode
+        const matchingPapers = d.papers.filter(p => {
+          // 1. Advisor mode match
+          if (soloFilter === 'solo' && p.type !== 'solo') return false;
+          if (soloFilter === 'co' && p.type !== 'co') return false;
+
+          // 2. Query text match against paper fields
+          if (query === "") return true;
+
+          const matchPaperTitle = p.title.toLowerCase().includes(query);
+          const matchProf = p.prof.toLowerCase().includes(query);
+          const matchStudent = p.student.toLowerCase().includes(query);
+          const matchTech = p.tech.toLowerCase().includes(query);
+          const matchCoProf = p.coProf ? p.coProf.toLowerCase().includes(query) : false;
+          const matchDiseaseTitle = d.title.toLowerCase().includes(query);
+          const matchDiseaseDesc = d.desc.toLowerCase().includes(query);
+
+          return matchPaperTitle || matchProf || matchStudent || matchTech || matchCoProf || matchDiseaseTitle || matchDiseaseDesc;
+        });
+
+        // Return modified disease item if matches exist or overall title matches
+        const matchesDiseaseTop = query === "" || d.title.toLowerCase().includes(query) || d.desc.toLowerCase().includes(query) || d.profs.some(p => p.toLowerCase().includes(query));
+
+        if (matchingPapers.length > 0 || matchesDiseaseTop) {
+          return {
+            ...d,
+            papers: matchingPapers.length > 0 ? matchingPapers : d.papers
+          };
+        }
+        return null;
+      }).filter(item => item !== null);
+
+      renderDiseaseView(filteredDiseases);
+      updateResultCount(filteredDiseases.length);
+    }
+
+    // 🏷️ Filter by Tag Click
+    function filterByTag(tag, btnElement) {
+      document.querySelectorAll('.tag-btn').forEach(b => b.classList.remove('active'));
+      btnElement.classList.add('active');
+      currentActiveTag = tag;
+
+      const input = document.getElementById("searchInput");
+      if (tag === '全部') {
+        input.value = "";
+      } else {
+        // Sanitize tag name for clean search string
+        const cleanTag = tag.replace(/[^a-zA-Z0-9\u4e00-\u9fa5]/g, '').replace("乳癌TNBC", "乳癌").replace("腦瘤GBM", "腦瘤").replace("肝細胞癌HCC", "肝癌");
+        input.value = cleanTag;
+      }
+      filterData();
+    }
+
+    function filterByProfName(profName) {
+      switchTab('disease');
+      const input = document.getElementById("searchInput");
+      input.value = profName;
+      filterData();
+    }
+
+    function clearSearch() {
+      document.getElementById("searchInput").value = "";
+      document.querySelectorAll('.tag-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tag-btn')[0].classList.add('active');
+      filterData();
+    }
+
+    function updateResultCount(count) {
+      document.getElementById("resultCount").innerText = `當前符合適應症類別：${count} 大類`;
+    }
+
+    // 📌 Perspective Switcher Tab Handler
+    function switchTab(tab) {
+      document.getElementById('view-disease').classList.toggle('hidden', tab !== 'disease');
+      document.getElementById('view-professor').classList.toggle('hidden', tab !== 'professor');
+      document.getElementById('view-matrix').classList.toggle('hidden', tab !== 'matrix');
+      
+      const activeClass = "px-6 py-3 font-extrabold border-t-2 border-x-2 border-zinc-800 bg-amber-600 text-white -mb-[2px] shadow-sm flex items-center gap-2";
+      const inactiveClass = "px-6 py-3 font-extrabold border-t-2 border-x-2 border-zinc-800 bg-white text-gray-700 -mb-[2px] flex items-center gap-2 hover:bg-amber-50";
+
+      document.getElementById('tab-disease').className = tab === 'disease' ? activeClass : inactiveClass;
+      document.getElementById('tab-professor').className = tab === 'professor' ? activeClass : inactiveClass;
+      document.getElementById('tab-matrix').className = tab === 'matrix' ? activeClass : inactiveClass;
+    }
+
+    // 📜 Detailed Modal Popup Logic
+    function openModal(title, id) {
+      const disease = db.diseases.find(d => d.id === id);
+      const modal = document.getElementById("paperModal");
+      const content = document.getElementById("modalContent");
+      
+      document.getElementById("modalTitle").innerText = title;
+      document.getElementById("modalPaperCount").innerText = `共收錄論文：${disease.papers.length} 篇`;
+
+      content.innerHTML = `
+        <div class="bg-amber-50 border-l-4 border-amber-600 p-3 mb-4 text-xs text-amber-900 font-medium">
+          <i class="fa-solid fa-circle-info text-amber-600 mr-1"></i>
+          以下呈現 ${disease.title} 領域之精選博碩士論文詳細資料。點選指導模式標籤可查看單獨指導或共同合作指導教授資訊。
+        </div>
+        <div class="space-y-3">
+          ${disease.papers.map((p, idx) => `
+            <div class="p-4 border-2 border-zinc-800 bg-white hover:border-amber-600 transition-colors shadow-sm">
+              <div class="flex flex-wrap justify-between items-center gap-2 mb-2">
+                <span class="font-black text-amber-700 text-sm flex items-center gap-1">
+                  <i class="fa-solid fa-user-graduate"></i> ${p.prof} 教授團隊 
+                  <span class="${p.type==='solo'?'badge-solo':'badge-co'} text-xs font-extrabold px-2 py-0.5 rounded-sm">
+                    ${p.type==='solo' ? '單獨指導 Solo' : '共同指導: '+p.coProf}
+                  </span>
+                </span>
+                <span class="text-xs text-gray-500 font-bold bg-zinc-100 px-2 py-0.5 border border-zinc-300">
+                  <i class="fa-regular fa-calendar-check mr-1"></i>${p.year} 學年度 | 研究生: ${p.student}
+                </span>
+              </div>
+              <h4 class="font-black text-zinc-900 text-base leading-snug mb-2">${idx + 1}. ${p.title}</h4>
+              <div class="flex flex-wrap items-center gap-2 text-xs">
+                <span class="font-bold text-gray-700">關鍵技術/微氣泡載體:</span>
+                <span class="bg-amber-100 text-amber-900 font-bold px-2 py-0.5 border border-amber-300">
+                  <i class="fa-solid fa-vial text-amber-600 mr-1"></i>${p.tech}
+                </span>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+      modal.classList.remove("hidden");
+    }
+
+    function closeModal() {
+      document.getElementById("paperModal").classList.add("hidden");
+    }
+
+    // 📥 JSON Data Exporter
+    function exportData() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(db, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `Biomedical_Research_Assets_Hub_${new Date().toISOString().slice(0,10)}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+
+      showToast("已成功下載完整的生醫學術地圖與教授研究資產資料庫 (JSON)！");
+    }
+
+    // Toast Notification helper (replaces standard alert)
+    function showToast(msg) {
+      const toast = document.getElementById("toast");
+      document.getElementById("toastMsg").innerText = msg;
+      toast.classList.remove("hidden");
+      setTimeout(() => {
+        toast.classList.add("hidden");
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
